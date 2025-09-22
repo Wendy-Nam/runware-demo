@@ -1,106 +1,70 @@
 import { Runware } from '@runware/sdk-js';
 
+const API_KEY = process.env.NEXT_PUBLIC_RUNWARE_API_KEY;
+const REQUEST_TIMEOUT = 15000;
+
+// Generate images using Runware API
 export async function generateDemoImages(prompt = "Beautiful landscape") {
-  console.log('🚀 Starting API call...');
-  console.log('🔑 API Key:', process.env.NEXT_PUBLIC_RUNWARE_API_KEY ? 'EXISTS' : 'MISSING');
-  console.log('🔑 API Key length:', process.env.NEXT_PUBLIC_RUNWARE_API_KEY?.length);
-  console.log('🔑 Full API Key:', process.env.NEXT_PUBLIC_RUNWARE_API_KEY);
-  
-  if (!process.env.NEXT_PUBLIC_RUNWARE_API_KEY) {
-    console.error('❌ No API key found');
-    return [];
-  }
-  
-  console.log('🔧 Creating Runware instance...');
-  const runware = new Runware({ 
-    apiKey: process.env.NEXT_PUBLIC_RUNWARE_API_KEY || '' 
-  });
-  console.log('✅ Runware instance created');
-  
   try {
-    console.log('🌐 Attempting API call...');
-    
-    // 15초 타임아웃 설정
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Request timeout after 15s')), 15000)
-    );
+    const runware = createRunwareInstance();
     
     const imagePromise = runware.requestImages({
       positivePrompt: prompt,
-      model: "runware:101@1", // 기본 모델로 변경
+      model: "runware:101@1",
       width: 1024,
       height: 1024,
     });
     
-    const images = await Promise.race([imagePromise, timeoutPromise]);
-    
-    console.log('✅ API Success:', images);
-    console.log('✅ API Response Type:', typeof images);
-    console.log('✅ Is Array:', Array.isArray(images));
-    
-    let result;
-    if (Array.isArray(images)) {
-      console.log('✅ Array length:', images.length);
-      console.log('✅ First item:', images[0]);
-      result = [images[0]?.imageURL];
-    } else {
-      console.log('✅ Single object:', images);
-      result = [images?.imageURL];
-    }
-    
-    console.log('✅ Final result:', result);
-    return result;
+    const images = await withTimeout(imagePromise, REQUEST_TIMEOUT);
+    return extractURL(images, 'imageURL');
   } catch (error) {
-    console.error('❌ API Failed:', error);
+    console.log('Image generation failed:', error);
     return [];
   }
 }
 
-export async function generateDemoVideos(prompt: string = "Flying bird in the sky") {
-  console.log('🎬 Starting video generation...', prompt);
-  
+// Generate videos using Runware API
+export async function generateDemoVideos(prompt = "Flying bird in the sky") {
   try {
-    const runware = new Runware({
-      apiKey: process.env.NEXT_PUBLIC_RUNWARE_API_KEY || ''
-    });
+    const runware = createRunwareInstance();
     
-    console.log('✅ Runware instance created');
-
-    const payload = {
+    const response = await runware.videoInference({
       positivePrompt: prompt,
       model: "klingai:5@3",
       duration: 5,
       width: 1080,
       height: 1080
-    };
-
-    console.log('🎬 Video request payload:', payload);
-    console.log('⏳ Video generation started... (this may take several minutes)');
+    });
     
-    // SDK가 자체적으로 처리하도록 단순화
-    const response = await runware.videoInference(payload);
-    
-    console.log('Video API response:', response);
-    
-    if (Array.isArray(response) && response.length > 0) {
-      const videoURL = response[0]?.videoURL || response[0]?.outputURL;
-      if (videoURL) {
-        console.log(`Generated video: ${videoURL}`);
-        return [videoURL];
-      }
-    } else if (response) {
-      const videoURL = response.videoURL || response.outputURL;
-      if (videoURL) {
-        console.log(`Generated video: ${videoURL}`);
-        return [videoURL];
-      }
-    }
-    
-    throw new Error('No video URL in response');
-      
+    return extractURL(response, 'videoURL') || extractURL(response, 'outputURL');
   } catch (error) {
-    console.error('Video generation failed:', error);
+    console.log('Video generation failed:', error);
     return [];
   }
 }
- 
+
+// Create Runware instance with API key validation
+const createRunwareInstance = () => {
+  if (!API_KEY) {
+    throw new Error('Runware API key not found');
+  }
+  return new Runware({ apiKey: API_KEY });
+};
+
+// Add timeout to any Promise
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
+  const timeout = new Promise<never>((_, reject) => 
+    setTimeout(() => reject(new Error(`Request timeout after ${ms}ms`)), ms)
+  );
+  return Promise.race([promise, timeout]);
+};
+
+// Extract URL from API response (array or object)
+const extractURL = (response: unknown, urlKey: string): string[] => {
+  if (Array.isArray(response) && response.length > 0) {
+    const url = (response[0] as Record<string, unknown>)?.[urlKey];
+    return typeof url === 'string' ? [url] : [];
+  }
+  const url = (response as Record<string, unknown>)?.[urlKey];
+  return typeof url === 'string' ? [url] : [];
+};
