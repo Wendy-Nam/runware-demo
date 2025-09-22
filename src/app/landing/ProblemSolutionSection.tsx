@@ -18,7 +18,8 @@ export default function ProblemSolutionSection() {
       solutionAvatar: Zap,
       category: "Performance",
       avatarColor: "text-red-500 bg-red-100",
-      solutionAvatarColor: "text-yellow-500 bg-yellow-100"
+      solutionAvatarColor: "text-yellow-500 bg-yellow-100",
+      benefit: "→ Prevent user churn"
     },
     {
       conceptualPain: "Developer Experience",
@@ -30,7 +31,8 @@ export default function ProblemSolutionSection() {
       solutionAvatar: Wrench,
       category: "Developer Experience",
       avatarColor: "text-blue-500 bg-blue-100",
-      solutionAvatarColor: "text-blue-600 bg-blue-100"
+      solutionAvatarColor: "text-blue-600 bg-blue-100",
+      benefit: "→ Maximize dev productivity"
     },
     {
       conceptualPain: "Pricing",
@@ -42,7 +44,8 @@ export default function ProblemSolutionSection() {
       solutionAvatar: TrendingUp,
       category: "Pricing",
       avatarColor: "text-green-500 bg-green-100",
-      solutionAvatarColor: "text-green-600 bg-green-100"
+      solutionAvatarColor: "text-green-600 bg-green-100",
+      benefit: "→ Predictable growth"
     },
     {
       conceptualPain: "Infrastructure",
@@ -54,9 +57,63 @@ export default function ProblemSolutionSection() {
       solutionAvatar: Shield,
       category: "Infrastructure",
       avatarColor: "text-purple-500 bg-purple-100",
-      solutionAvatarColor: "text-purple-600 bg-purple-100"
+      solutionAvatarColor: "text-purple-600 bg-purple-100",
+      benefit: "→ Zero ops worries"
     }
   ];
+
+  const PainPointCard = ({ conv, index, isSelected, onClick }: {
+    conv: typeof conversations[0];
+    index: number;
+    isSelected: boolean;
+    onClick: () => void;
+  }) => {
+    const AvatarIcon = conv.avatar;
+    return (
+      <div
+        onClick={onClick}
+        className={`
+          cursor-pointer p-4 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105
+          ${isSelected 
+            ? 'bg-red-50 border-red-300 shadow-lg scale-105' 
+            : 'bg-white border-gray-100 hover:border-red-200 hover:shadow-md'
+          }
+        `}
+      >
+        <div className="flex items-start gap-3">
+          <div className={`
+            w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
+            ${isSelected ? conv.avatarColor : 'bg-gray-100 text-gray-500'}
+          `}>
+            <AvatarIcon size={20} />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs text-gray-800 font-semibold px-2 py-1 rounded-full">
+                {conv.category}
+              </span>
+              {isSelected && (
+                <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full animate-pulse">
+                  Active
+                </span>
+              )}
+            </div>
+            <p className="text-gray-500 text-sm">{conv.conceptualDescription}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ChatMessage = ({ children, delay, className = "" }: {
+    children: React.ReactNode;
+    delay: string;
+    className?: string;
+  }) => (
+    <div className={`animate-chatMessage ${className}`} style={{ animationDelay: delay }}>
+      {children}
+    </div>
+  );
 
   // Auto play functionality
   useEffect(() => {
@@ -104,42 +161,13 @@ export default function ProblemSolutionSection() {
               </div>
 
               {conversations.map((conv, index) => (
-                <div
+                <PainPointCard
                   key={index}
+                  conv={conv}
+                  index={index}
+                  isSelected={selectedQuestion === index}
                   onClick={() => setSelectedQuestion(index)}
-                  className={`
-                    cursor-pointer p-4 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105
-                    ${selectedQuestion === index 
-                      ? 'bg-red-50 border-red-300 shadow-lg scale-105' 
-                      : 'bg-white border-gray-100 hover:border-red-200 hover:shadow-md'
-                    }
-                  `}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`
-                      w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
-                      ${selectedQuestion === index ? conv.avatarColor : 'bg-gray-100 text-gray-500'}
-                    `}>
-                      {(() => {
-                        const AvatarIcon = conv.avatar;
-                        return <AvatarIcon size={20} />;
-                      })()}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs text-gray-800 font-semibold px-2 py-1 rounded-full">
-                          {conv.category}
-                        </span>
-                        {selectedQuestion === index && (
-                          <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full animate-pulse">
-                            Active
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-gray-500 text-sm">{conv.conceptualDescription}</p>
-                    </div>
-                  </div>
-                </div>
+                />
               ))}
             </div>
 
@@ -159,13 +187,11 @@ export default function ProblemSolutionSection() {
                   </div>
                 </div>
 
-                {/* Chat Container - 질문 리스트와 같은 높이로 조정 */}
+                {/* Chat Container */}
                 <div className="bg-white rounded-b-2xl overflow-hidden p-4 relative" style={{ height: 'calc(4 * 120px + 80px)' }}>
-                  
-                  {/* Selected conversation */}
                   <div className="space-y-4 h-full flex flex-col">
                     {/* User Question */}
-                    <div className="flex items-start gap-2 animate-chatMessage" style={{ animationDelay: '0.2s' }}>
+                    <ChatMessage delay="0.2s" className="flex items-start gap-2">
                       <div className="w-8 h-8 bg-gray-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-sm">
                         D
                       </div>
@@ -175,45 +201,42 @@ export default function ProblemSolutionSection() {
                         </div>
                         <div className="text-xs text-gray-400 mt-1 ml-2">now</div>
                       </div>
-                    </div>
+                    </ChatMessage>
 
                     {/* Runware Answer */}
-                    <div className="flex items-start gap-2 justify-end animate-chatMessage" style={{ animationDelay: '0.8s' }}>
+                    <ChatMessage delay="0.8s" className="flex items-start gap-2 justify-end">
                       <div className="flex-1">
                         <div className="bg-accent-content text-white rounded-2xl rounded-tr-sm px-4 py-4 ml-auto max-w-xs shadow-lg min-h-[160px] flex flex-col">
-                          {/* Solution Title - 강조 표시 */}
-                          <div className="mb-3 p-2 bg-white/20 rounded-lg border border-white/30 animate-chatMessage" style={{ animationDelay: '1.2s' }}>
+                          <ChatMessage delay="1.2s" className="mb-3 p-2 bg-white/20 rounded-lg border border-white/30">
                             <h4 className="text-sm font-bold text-white">
                               {conversations[selectedQuestion].solutionTitle}
                             </h4>
-                          </div>
+                          </ChatMessage>
                           
-                          {/* Solution Description */}
-                          <p className="text-sm leading-relaxed animate-chatMessage flex-1" style={{ animationDelay: '1.4s' }}>
+                          <ChatMessage delay="1.4s" className="text-sm leading-relaxed flex-1">
                             {conversations[selectedQuestion].solution}
-                          </p>
+                          </ChatMessage>
                           
-                          {/* Additional benefits - 따로 표시 */}
-                          <div className="mt-3 pt-2 border-t border-white/20 animate-chatMessage" style={{ animationDelay: '1.6s' }}>
+                          <ChatMessage delay="1.6s" className="mt-3 pt-2 border-t border-white/20">
                             <p className="text-xs text-blue-100">
-                              {conversations[selectedQuestion].category === 'Performance' && '→ Prevent user churn'}
-                              {conversations[selectedQuestion].category === 'Developer Experience' && '→ Maximize dev productivity'}
-                              {conversations[selectedQuestion].category === 'Pricing' && '→ Predictable growth'}
-                              {conversations[selectedQuestion].category === 'Infrastructure' && '→ Zero ops worries'}
+                              {conversations[selectedQuestion].benefit}
                             </p>
-                          </div>
+                          </ChatMessage>
                         </div>
-                        <div className="text-xs text-gray-400 mt-1 mr-2 text-right animate-chatMessage" style={{ animationDelay: '1.8s' }}>just now ✓✓</div>
+                        <ChatMessage delay="1.8s" className="text-xs text-gray-400 mt-1 mr-2 text-right">
+                          just now ✓✓
+                        </ChatMessage>
                       </div>
                       <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-sm">
                         R
                       </div>
-                  </div>
-                  {/* Hint overlay */}
+                    </ChatMessage>
+
+                    {/* Hint overlay */}
                     <div className="absolute bottom-6 left-4 right-4 z-10 pointer-events-none">
-                    <div className="py-2 opacity-50">
-                      <p className="text-xs text-accent-content text-center">← Click on the pain points!</p>
-                    </div>
+                      <div className="py-2 opacity-50">
+                        <p className="text-xs text-accent-content text-center">← Click on the pain points!</p>
+                      </div>
                     </div>
 
                     {/* Spacer to push progress indicator to bottom */}
@@ -236,7 +259,6 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>

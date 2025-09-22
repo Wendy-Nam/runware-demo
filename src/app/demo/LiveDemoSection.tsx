@@ -25,22 +25,35 @@ export default function LiveDemoSection() {
         ? await generateDemoImages()
         : (await generateDemoVideos()).filter(Boolean);
       
-      console.log('🎯 Generated results:', results);
-      console.log('🎯 First result URL:', results[0]);
-      
       setState(prev => 
         prev.map(item => 
           item.id === id ? { ...item, loading: false, url: results[0] } : item
         )
       );
     } catch {
-      setState(prev => 
-        prev.map(item => 
-          item.id === id ? { ...item, loading: false } : item
-        )
-      );
+      setState(prev => prev.map(item => 
+        item.id === id ? { ...item, loading: false } : item
+      ));
     }
   };
+
+  const MediaItem = ({ item, type }: { item: MediaItem, type: 'image' | 'video' }) => (
+    <div className="flex-shrink-0 w-48 h-48 bg-base-200 rounded flex items-center justify-center">
+      {item.loading ? (
+        <div className='w-[200px] h-[200px] flex items-center justify-center border-2 border-gray-200 bg-gray-100'>
+          <Loading size="lg" className='text-accent-content/80'/>
+        </div>
+      ) : item.url ? (
+        type === 'image' ? (
+          <Image src={item.url} alt="" width={200} height={200} className="rounded w-full h-full object-cover" />
+        ) : (
+          <video src={item.url} controls className="rounded w-full h-full object-cover" />
+        )
+      ) : (
+        <span className="text-base-content/50">Failed</span>
+      )}
+    </div>
+  );
 
   const MediaQueue = ({ items, title, type }: { 
     items: MediaItem[], 
@@ -56,24 +69,9 @@ export default function LiveDemoSection() {
           </Button>
         </div>
         <div className="flex overflow-x-auto gap-4 p-2 bg-base-200">
-          {items.map(item => (
-            <div key={item.id} className="flex-shrink-0 w-48 h-48 bg-base-200 rounded flex items-center justify-center">
-              {item.loading ? (
-                <div className='w-[200px] h-[200px] flex items-center justify-center border border-2 border-gray-200 bg-gray-100'>
-                  <Loading size="lg" className='text-accent-content/80'/>
-                </div>
-              ) : item.url ? (
-                type === 'image' ? (
-                  <Image src={item.url} alt="" width={200} height={200} className="rounded w-full h-full object-cover" />
-                ) : (
-                  <video src={item.url} controls className="rounded w-full h-full object-cover" />
-                )
-              ) : (
-                <span className="text-base-content/50">Failed</span>
-              )}
-            </div>
-          ))}
-          {items.length === 0 && (
+          {items.length > 0 ? (
+            items.map(item => <MediaItem key={item.id} item={item} type={type} />)
+          ) : (
             <div className="text-center w-full py-8 text-base-content/50">
               No {title.toLowerCase()} generated yet
             </div>

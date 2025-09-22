@@ -30,13 +30,36 @@ export default function DevExSection() {
     }
   ];
 
+  const FeatureCard = ({ feature }: { feature: typeof features[0] }) => (
+    <Card className="bg-neutral-focus transition-shadow duration-300 border-neutral-content/30 border-b-2 rounded-none">
+      <Card.Body className="p-8">
+        <div className="flex items-start gap-4 mb-4">
+          <div className="p-3 bg-accent/10">
+            {feature.icon}
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-neutral-content">
+              {feature.title}
+            </h3>
+            <p className="text-neutral-content/80">
+              {feature.description}
+            </p>
+          </div>
+        </div>
+        <div className="bg-neutral-content/5 p-4 rounded-md text-sm mt-auto">
+          <p className="text-neutral-content/70 italic">
+            &ldquo;{feature.quote}&rdquo;
+          </p>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+
   return (
     <section className="py-24 bg-neutral text-neutral-content">
       <div className="container mx-auto px-6">
-        
-        {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-neutral-content mb-4">
+          <h2 className="text-5xl font-bold text-neutral-content mb-4">
             Built for Developers
           </h2>
           <p className="text-lg text-neutral-content/70 max-w-2xl mx-auto">
@@ -44,34 +67,11 @@ export default function DevExSection() {
           </p>
         </div>
         
-        {/* Features Grid */}
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {features.map((feature, index) => (
-            <Card key={index} className="bg-neutral-focus transition-shadow duration-300 border-neutral-content/30 border-b-2 rounded-none">
-              <Card.Body className="p-8">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="p-3 bg-accent/10">
-                    {feature.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-neutral-content">
-                      {feature.title}
-                    </h3>
-                    <p className="text-neutral-content/80">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-neutral-content/5 p-4 rounded-md text-sm mt-auto">
-                  <p className="text-neutral-content/70 italic">
-                    &ldquo;{feature.quote}&rdquo;
-                  </p>
-                </div>
-              </Card.Body>
-            </Card>
+            <FeatureCard key={index} feature={feature} />
           ))}
         </div>
-        
       </div>
     </section>
   );

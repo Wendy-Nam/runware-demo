@@ -3,22 +3,34 @@ import { Hero, Button } from 'react-daisyui';
 import { Play, Code, Zap, Rocket } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-// URL Constants
-const URLS = {
-  GITHUB_REPO: 'https://github.com/runware/sdk-js',
-  DOCS: 'https://docs.runware.ai',
-  DEMO_PAGE: '/demo',
-  QUICKSTART_SECTION: '#quickstart'
-} as const;
-
 export default function HeroSection() {
   const router = useRouter();
+  
+  const keyPoints = [
+    { icon: Zap, text: "One API Call" },
+    { icon: Code, text: "Zero Infrastructure" },
+    { icon: Rocket, text: "Deploy Anywhere" }
+  ];
+
+  const buttons = [
+    {
+      text: "Run Demo",
+      onClick: () => router.push('/demo'),
+      className: "btn px-8 font-semibold rounded-sm",
+      color: "neutral" as const,
+      icon: <Play size={20} />
+    },
+    {
+      text: "View Github",
+      onClick: () => window.open('https://github.com/runware/sdk-js', '_blank'),
+      className: "btn px-8 btn-outline rounded-sm"
+    }
+  ];
 
   return (
     <Hero className="h-full py-16 pt-36 bg-accent-content">
       <Hero.Content className="text-center text-white max-w-5xl">
         <div className="space-y-12 w-screen">
-          {/* Main content - centered */}
           <div className="text-center space-y-8">
             <div>
               <h1 className="text-6xl font-bold mb-6 leading-tight">
@@ -30,40 +42,31 @@ export default function HeroSection() {
               </p>
             </div>
             
-            {/* Simple key points */}
             <div className="flex flex-wrap justify-center gap-8 text-sm opacity-90 py-1">
-              <div className="flex items-center gap-2">
-                <Zap size={16} className="" />
-                <span className="font-medium">One API Call</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Code size={16} className="" />
-                <span className="font-medium">Zero Infrastructure</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Rocket size={16} className="" />
-                <span className="font-medium">Deploy Anywhere</span>
-              </div>
+              {keyPoints.map((point, index) => {
+                const IconComponent = point.icon;
+                return (
+                  <div key={index} className="flex items-center gap-2">
+                    <IconComponent size={16} />
+                    <span className="font-medium">{point.text}</span>
+                  </div>
+                );
+              })}
             </div>
             
-            {/* Action Buttons */}
             <div className="flex gap-4 justify-center pt-4">
-              <Button 
-                color="neutral" 
-                size="lg"
-                className="btn px-8 font-semibold rounded-sm"
-                onClick={() => router.push(URLS.DEMO_PAGE)}
-                startIcon={<Play size={20} />}
-              >
-                Run Demo
-              </Button>
-              <Button 
-                size="lg"
-                className='btn px-8 btn-outline rounded-sm'
-                onClick={() => window.open(URLS.GITHUB_REPO, '_blank')}
-              >
-                View Github
-              </Button>
+              {buttons.map((button, index) => (
+                <Button
+                  key={index}
+                  size="lg"
+                  color={button.color}
+                  className={button.className}
+                  onClick={button.onClick}
+                  startIcon={button.icon}
+                >
+                  {button.text}
+                </Button>
+              ))}
             </div>
           </div>
         </div>
