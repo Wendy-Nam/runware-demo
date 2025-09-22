@@ -12,14 +12,14 @@ export default function ProblemSolutionSection() {
       conceptualPain: "Performance",
       conceptualDescription: "Response delays → User churn",
       chatPain: "With existing APIs, image generation takes about 15 seconds and users just leave while waiting. It's also embarrassing during demos... Is there a faster alternative?",
-      solution: "Average 0.6s response, no cold starts",
+      solution: "0.6–4.0s per model, no cold starts.",
       solutionTitle: "⚡ Feels Instant",
       avatar: Clock,
       solutionAvatar: Zap,
       category: "Performance",
       avatarColor: "text-red-500 bg-red-100",
       solutionAvatarColor: "text-yellow-500 bg-yellow-100",
-      benefit: "→ Prevent user churn"
+      benefit: "→ Users stay engaged"
     },
     {
       conceptualPain: "Developer Experience",

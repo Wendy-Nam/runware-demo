@@ -15,7 +15,7 @@ export default function CTASection() {
   return (
     <section className="py-32 bg-accent/10">
       <div className="container mx-auto px-6 max-w-5xl">
-        <Card className="bg-base-100 shadow-lg">
+        <Card className="bg-base-100 shadow-lg rounded-md">
           <Card.Body className="p-8 text-center">
             <h2 className="text-4xl font-bold mb-4 text-accent-content">
               {ctaData.title}

@@ -7,18 +7,18 @@ export default function CodeBlock() {
 const runware = new Runware({ apiKey: "your-api-key" });
 
 const images = await runware.requestImages({
-  positivePrompt: "A beautiful landscape",
-  model: "runware:101@1",
-  width: 512,
-  height: 512,
+    positivePrompt: "A beautiful landscape",
+    model: "runware:101@1",
+    width: 1024,
+    height: 1024,
 });
 
 const videos = await runware.requestVideoInference({
-  positivePrompt: "A flowing river",
-  model: "runware:501@1",
-  width: 512,
-  height: 512,
-  frames: 16,
+    positivePrompt: prompt,
+    model: "klingai:5@3",
+    duration: 5,
+    width: 1080,
+    height: 1080,
 });
 `;
 
