@@ -127,14 +127,6 @@ export default function ProblemSolutionSection() {
 
   return (
     <section className="py-20 bg-base-300 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 text-6xl animate-pulse">💭</div>
-        <div className="absolute top-40 right-20 text-4xl animate-bounce">😫</div>
-        <div className="absolute bottom-20 left-20 text-5xl animate-pulse">💡</div>
-        <div className="absolute bottom-40 right-10 text-3xl animate-bounce">✨</div>
-      </div>
-
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold mb-6 text-base-content">

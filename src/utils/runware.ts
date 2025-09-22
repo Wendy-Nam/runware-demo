@@ -10,7 +10,7 @@ export async function generateDemoImages(prompt = "Beautiful landscape") {
     
     const imagePromise = runware.requestImages({
       positivePrompt: prompt,
-      model: "runware:101@1",
+      model: "runware:101@1", // Other Model: "civitai:36520@76907", etc.
       width: 1024,
       height: 1024,
     });
@@ -68,3 +68,23 @@ const extractURL = (response: unknown, urlKey: string): string[] => {
   const url = (response as Record<string, unknown>)?.[urlKey];
   return typeof url === 'string' ? [url] : [];
 };
+
+// =============================
+// Demo Scenario 1: Parallel Image Requests
+// - Show how multiple prompts can generate images simultaneously
+// - Use Promise.all for parallel API calls
+// =============================
+
+
+// =============================
+// Demo Scenario 2: Image + Video in Parallel
+// - Show that one SDK call structure supports multiple task types
+// - Run image + video generation at the same time
+// =============================
+
+
+// =============================
+// Demo Scenario 3: Model Switching
+// - Same code, just swap the model parameter
+// - Demonstrates how easy it is to experiment with different styles
+// =============================
