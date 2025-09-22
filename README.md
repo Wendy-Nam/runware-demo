@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Runware Demo – AI Image & Video Generator
 
-## Getting Started
+**AI Generation Demo**: Web application showcasing Runware's API capabilities with minimal code integration.
 
-First, run the development server:
+## 📋 Assessment Context
+
+This project was built as part of Runware's Graduate Roles Assessment to evaluate:
+
+- **Technical Integration** – API implementation with error handling
+- **Developer Communication** – Clear code & documentation  
+- **Presentation Skills** – Demo-ready app with smooth UX
+
+## 🎯 Demo Flow
+
+1. **Landing Page** – Runware's value proposition for developers
+2. **Code Walkthrough** – `runware.ts` API integration explained
+3. **Live Demo** – Real-time image & video generation
+
+## ✨ Key Features
+
+- **🖼️ One-click Image Generation** – Instant high-quality results
+- **🎬 Video Generation** – Cinematic 5s clips powered by Kling AI  
+- **⚡ Real-time Queue Handling** – Parallel processing with live updates
+- **📱 Responsive UI** – Optimized across devices
+
+## 🚀 Quick Start
 
 ```bash
+git clone https://github.com/Wendy-Nam/runware-demo.git
+cd runware-demo
+npm install
+# Add API key to .env.local: NEXT_PUBLIC_RUNWARE_API_KEY=your_key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Visit http://localhost:3000/demo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Technical Implementation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Stack**: Next.js 15 + TypeScript + TailwindCSS/DaisyUI  
+**Architecture**: Two-file separation → `runware.ts` (API logic) + `LiveDemoSection.tsx` (UI)  
+**AI Models**:
+- Images → `runware:101@1` (SDXL, 1024×1024, 15s timeout)
+- Videos → `klingai:5@3` (1080×1080, 5s duration)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Design Choices**: Fixed prompts ("Beautiful landscape", "Flying bird"), parallel request handling, type-safe API calls
 
-## Learn More
+## 🎬 Demo Experience
 
-To learn more about Next.js, take a look at the following resources:
+- **Images** → "Beautiful landscape" generated instantly
+- **Videos** → "Flying bird in the sky" 5s cinematic clip  
+- **Queue System** → Multiple requests with progress indicators
+- **Feedback** → Real-time logs showing usage & status
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/demo/           # Interactive demo
+├── app/landing/        # Landing page  
+├── utils/runware.ts    # API integration
+└── components/         # Reusable UI components
+```
 
-## Deploy on Vercel
+## 📚 Resources
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Runware Docs](https://docs.runware.ai) • [Playground](https://runware.ai/playground) • [Runware SDK (JS)](https://github.com/Runware/sdk-js)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+**Built for Runware Graduate Roles Assessment**
