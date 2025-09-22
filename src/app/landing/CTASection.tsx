@@ -17,7 +17,7 @@ export default function CTASection() {
                 </h2>
                 <p className="text-lg text-base-content/80 max-w-xl mx-auto">
                   Start creating with AI that&apos;s fast, affordable, and sustainable.<br/> 
-                  1000 images for the price of a coffee.
+                  1000+ images for the price of a coffee.
                 </p>
               </div>
 

@@ -17,7 +17,7 @@ export default function HeroSection() {
   return (
     <Hero className="h-full py-16 pt-36 bg-accent-content">
       <Hero.Content className="text-center text-white max-w-5xl">
-        <div className="space-y-12">
+        <div className="space-y-12 w-screen">
           {/* Main content - centered */}
           <div className="text-center space-y-8">
             <div>
@@ -51,7 +51,7 @@ export default function HeroSection() {
               <Button 
                 color="neutral" 
                 size="lg"
-                className="px-8 font-semibold rounded-sm"
+                className="btn px-8 font-semibold rounded-sm"
                 onClick={() => router.push(URLS.DEMO_PAGE)}
                 startIcon={<Play size={20} />}
               >
@@ -59,7 +59,7 @@ export default function HeroSection() {
               </Button>
               <Button 
                 size="lg"
-                className='px-8 btn-outline rounded-sm'
+                className='btn px-8 btn-outline rounded-sm'
                 onClick={() => window.open(URLS.GITHUB_REPO, '_blank')}
               >
                 View Github
