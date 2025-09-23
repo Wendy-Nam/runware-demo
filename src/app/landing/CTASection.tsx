@@ -27,6 +27,7 @@ export default function CTASection() {
             <Button 
               size="lg" 
               className="bg-accent hover:bg-accent/80 text-accent-content border-none rounded-md px-8"
+              onClick={() => window.open('https://runware.ai/docs/en/getting-started/introduction', '_blank')}
             >
               {ctaData.button.text}
               {ctaData.button.arrow}

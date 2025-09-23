@@ -22,7 +22,7 @@ export default function HeroSection() {
     },
     {
       text: "View Github",
-      onClick: () => window.open('https://github.com/runware/sdk-js', '_blank'),
+      onClick: () => window.open('https://github.com/Wendy-Nam/runware-demo', '_blank'),
       className: "btn px-8 btn-outline rounded-sm"
     }
   ];
