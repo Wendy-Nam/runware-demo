@@ -63,7 +63,7 @@ src/
 
 ## 📚 Resources
 
-- [Runware Docs](https://docs.runware.ai) • [Playground](https://runware.ai/playground) • [Runware SDK (JS)](https://github.com/Runware/sdk-js)
+- [Runware Docs](https://docs.runware.ai) • [Playground](https://my.runware.ai/playground) • [Runware SDK (JS)](https://github.com/Runware/sdk-js)
 
 ---
 
